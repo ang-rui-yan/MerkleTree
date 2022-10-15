@@ -1,19 +1,26 @@
 from merkleTree import MerkleTree
 
+# Hashing content from system1
 def testCase1() -> None:
     print("Test case 1:")
-    elements = ["Hello", "World", "From Merkle"]
-    mTree = MerkleTree(elements)
+    mTree = MerkleTree("data/system1")
     root_hash = mTree.getRootHash()
-    print(root_hash)
+    print("system1:", root_hash)
     print("")
 
+# Hashing content from system1
+# Hashing content from system2
+# Compare the hashes manually for now
 def testCase2() -> None:
     print("Test case 2:")
-    elements = ["Hello", "World", "From Merkle 2"]
-    mTree = MerkleTree(elements)
-    root_hash = mTree.getRootHash()
-    print(root_hash)
+    mTree1 = MerkleTree("data/system1")
+    root_hash1 = mTree1.getRootHash()
+    print("system1:", root_hash1)
+
+    mTree2 = MerkleTree("data/system2")
+    root_hash2 = mTree2.getRootHash()
+    print("system2:", root_hash2)
+    assert root_hash1 == root_hash2, "Different hash values when it should be the same"
     print("")
 
 if __name__ == "__main__":
