@@ -24,6 +24,16 @@ def testCase2() -> None:
     assert root_hash1 == root_hash2, "Different hash values when it should be the same"
     print("")
 
+def testCase3() -> None:
+    print("Test case 3:")
+    mTree1 = MerkleTree("data/system1")
+    mTree3 = MerkleTree("data/system3")
+
+    difference = MerkleTree.getDifferenceInTrees(mTree1, mTree3)
+    print(difference)
+    print("")
+
 if __name__ == "__main__":
     testCase1()
     testCase2()
+    testCase3()

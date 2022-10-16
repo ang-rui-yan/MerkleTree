@@ -123,5 +123,12 @@ class MerkleTree:
     # It determines 
     # If they are the same, NOTHING happens
     # Else, they search down the hashes (stored in somewhere) to find the difference
+    @staticmethod
+    def getDifferenceInTrees(merkleTree1, merkleTree2):
+        if merkleTree1.root.value == merkleTree2.root.value:
+            return None
+        else:
+            # Loop through to find the difference
+            return True
 
     # Searches for nodes
