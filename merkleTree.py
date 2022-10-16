@@ -1,6 +1,5 @@
 # Inspired by https://trebaud.github.io/posts/merkle-tree/
 
-import sys
 from typing import List
 import hashlib
 from os import walk
