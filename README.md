@@ -1,6 +1,9 @@
 # MerkleTree
 Implementation of Merkle Tree as part of CS104 Mathematical Foundations of Computing's project to understand Merkle Tree
 
+# Limitations of current file system
+- Slow to verify the data in the files (Running through everything)
+
 ## What is Merkle Tree?
 Merkle tree is a type of full binary tree where each parent node has two children.
 

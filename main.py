@@ -17,6 +17,7 @@ def testCase2() -> None:
     root_hash1 = mTree1.getRootHash()
     print("system1:", root_hash1)
 
+    print("")
     mTree2 = MerkleTree("data/system2")
     root_hash2 = mTree2.getRootHash()
     print("system2:", root_hash2)

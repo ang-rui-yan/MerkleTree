@@ -2,24 +2,20 @@
 
 from typing import List
 import hashlib
-from os import listdir, walk
-from os.path import isfile, join
+from os import walk
+from os.path import join
+import configparser, json
 
 # Create a node class
 class Node:
-    def __init__(self, left, right, value) -> None:
+    def __init__(self, left, right, value, fileName: str = None) -> None:
         self.left: Node = left
         self.right: Node = right
         self.value = value
+        self.fileName = fileName if fileName is not None else ""
 
     def __str__(self) -> str:
         return str(self.value)
-
-    # accessible without declaring
-    # SHA256
-    @staticmethod
-    def hash(value: str) -> str:
-        return hashlib.sha256(value.encode('utf-8')).hexdigest()
 
 # Merkle Tree class
 # This merkle tree implementation takes in files as input
@@ -27,9 +23,17 @@ class Node:
 class MerkleTree:
     # Takes in a path
     # Builds from files in the path
-    def __init__(self, filePath: str) -> None:
+    def __init__(self, filePath: str, hashStoragePath: str = None) -> None:
         values = self._getAllFileContent(filePath)
         self._buildTree(values)
+        if hashStoragePath is not None:
+            self.hashStoragePath = hashStoragePath 
+        else:
+            config = configparser.ConfigParser()
+            config.read('config.sys')
+            self.hashStoragePath = config.get("System","HashStorage")
+
+        self._saveRootHash(self.root.value, filePath, self.hashStoragePath)
 
     # Gets all the content from the files in the path
     def _getAllFileContent(self, filePath: str):
@@ -51,7 +55,7 @@ class MerkleTree:
             leaves = []
             for leaf in files:
                 # create nodes without any left and right
-                leaves.append(Node(None, None, Node.hash(leaf["value"])))
+                leaves.append(Node(None, None, MerkleTree.hash(leaf["value"]), leaf["filename"]))
             
             # Merkle tree is a full binary tree
             if len(leaves) % 2 == 1:
@@ -67,8 +71,8 @@ class MerkleTree:
 
         # when we reach our base case of 2, we end the recursive
         if len(nodes) == 2:
-            # hash the 
-            return Node(nodes[0], nodes[1], Node.hash(nodes[0].value + nodes[1].value))
+            # Hash the parent of two leaves (at the lowest level)
+            return Node(nodes[0], nodes[1], MerkleTree.hash(nodes[0].value + nodes[1].value))
 
         # Get all the left side at where we split the half
         left: Node = self._buildTreeHelper(nodes[:half])
@@ -76,8 +80,9 @@ class MerkleTree:
         right: Node = self._buildTreeHelper(nodes[half:])
 
         # Hash the parent of left and right
-        value: str = Node.hash(left.value + right.value)
+        value: str = MerkleTree.hash(left.value + right.value)
 
+        # Top level
         return Node(left, right, value)
     
     def printTree(self):
@@ -93,6 +98,26 @@ class MerkleTree:
 
     def getRootHash(self)-> str:
         return self.root.value
+        
+    # Store the hashes somewhere
+    def _saveRootHash(self, hash, systemName, filePath):
+        # Read the data, return empty if null
+        with open(filePath, 'r') as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                data = {}
+        
+        # update the hashes
+        with open(filePath, 'w') as f:
+            data[systemName] = hash
+            json.dump(data, f, indent=4)
+
+    # accessible without declaring
+    # SHA256
+    @staticmethod
+    def hash(value: str) -> str:
+        return hashlib.sha256(value.encode('utf-8')).hexdigest()
 
     # Static method that compares two file system
     # It determines 
@@ -100,7 +125,3 @@ class MerkleTree:
     # Else, they search down the hashes (stored in somewhere) to find the difference
 
     # Searches for nodes
-
-    # Store the hashes somewhere
-    def _saveTree(self):
-        pass
