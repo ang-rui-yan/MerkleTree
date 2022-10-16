@@ -82,7 +82,7 @@ class MerkleTree:
             return self._printTreeHelper(self.root)
         return None
     
-    def _printTreeHelper(self, node):
+    def _printTreeHelper(self, node: Node):
         if node is not None:
             self._printTreeHelper(node.left)
             print(node)
