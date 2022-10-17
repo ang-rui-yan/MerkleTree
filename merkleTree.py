@@ -1,5 +1,3 @@
-# Inspired by https://trebaud.github.io/posts/merkle-tree/
-
 from typing import List
 import hashlib
 from os import walk
@@ -23,7 +21,7 @@ class Node:
 class MerkleTree:
     # Takes in a path
     # Builds from files in the path
-    def __init__(self, filePath: str, hashStoragePath: str = None) -> None:
+    def __init__(self, filePath: str) -> None:
         values = self._getAllFileContent(filePath)
         self._buildTree(values)
 

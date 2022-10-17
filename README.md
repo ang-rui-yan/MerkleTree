@@ -25,7 +25,7 @@ Merkle tree hashes the content of a file, meaning if there are two files with di
 With hash, we can immediately tell if the content of two files are different.
 
 ## Tree reduces time to search where the difference is at
-In a scenario where two merkle trees have differing root hashes, we can speed up the process of searching the different file contents by looking at the left and right children node hashes .
+In a scenario where two merkle trees have differing root hashes, we can speed up the process of searching the different file contents by looking at the left and right children node hashes.
 In the worst case, it gives O(log2 n) since merkle tree is a full 2-ary tree unlike an old file system where it runs through every content at O(n).
 
 ## Implementation of Merkle Tree
