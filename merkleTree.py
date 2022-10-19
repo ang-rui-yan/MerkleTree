@@ -115,8 +115,7 @@ def getDifferenceInTrees(merkleTree1_filePath: str, merkleTree2_filePath: str):
 
     if merkleTree1.root is None or merkleTree2.root is None:
         return None
-
-    if merkleTree1.root.value == merkleTree2.root.value:
+    elif merkleTree1.root.value == merkleTree2.root.value:
         return None
     else:
         # Find the difference
