@@ -136,7 +136,7 @@ if __name__ == '__main__':
     # When there are both
     elif args.f1 is not None and args.f2 is not None: 
         difference = getDifferenceInTrees(args.f1, args.f2)
-        print("There is no difference." if difference is None else f"Error! The two systems are different:\n{difference}")
+        print("There is no difference." if difference is None else f"Error! There are {len(difference)} different files:\n{difference}")
     # When there is only the first argument
     elif args.f1 is not None:
         mTree1 = MerkleTree(args.f1)
